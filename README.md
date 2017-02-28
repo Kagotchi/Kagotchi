@@ -1,1 +1,2 @@
-# Kagotchi
+# KagotchiV1
+Kombat Tamagotchi

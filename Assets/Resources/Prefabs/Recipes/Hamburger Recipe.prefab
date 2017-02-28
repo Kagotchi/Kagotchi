@@ -1,0 +1,192 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &197618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22408740}
+  - 222: {fileID: 22217462}
+  - 114: {fileID: 11499906}
+  - 114: {fileID: 11445842}
+  - 225: {fileID: 22530794}
+  - 114: {fileID: 11452466}
+  m_Layer: 5
+  m_Name: Hamburger Recipe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &11445842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1f6cf3553056a47ad4f9b7064a1925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 1
+  ingredients:
+  - {fileID: 125650, guid: 9aa4af8ea8ba5b14ea2e2117878222d9, type: 2}
+  - {fileID: 154182, guid: 42207b20bd714ea479c9aaf54f9fd266, type: 2}
+  - {fileID: 101466, guid: 039edaeda4e6d6d4c91a2a30989606b1, type: 2}
+  - {fileID: 142144, guid: 13ff34bf0356aa245b688cfee9a5da9b, type: 2}
+  kitchenware:
+  - {fileID: 101096, guid: 35c7943bc675ccb4493f98c008529312, type: 2}
+  time: 60
+  servings: 1
+  recipeImage: {fileID: 21300000, guid: 64827c93446590f4a85705aef3a08775, type: 3}
+  recipeName: Hamburger
+  stepTime: 10
+  finalResul: {fileID: 155390, guid: 57a81338c9064994889d1f95de5e9426, type: 2}
+--- !u!114 &11452466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb075cf56c5a7642832a0fb31f91cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startParent: {fileID: 0}
+--- !u!114 &11499906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 4e4d795a7f0de4a4e903dd42f8d3547b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &22217462
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+--- !u!224 &22408740
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0000076293945, y: 0.000012397766}
+  m_SizeDelta: {x: 110, y: 155}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &22530794
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197618}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: ingredients.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kitchenware.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_SizeDelta.y
+      value: 155
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ingredients.Array.data[0]
+      value: 
+      objectReference: {fileID: 125650, guid: 9aa4af8ea8ba5b14ea2e2117878222d9, type: 2}
+    - target: {fileID: 0}
+      propertyPath: ingredients.Array.data[1]
+      value: 
+      objectReference: {fileID: 154182, guid: 42207b20bd714ea479c9aaf54f9fd266, type: 2}
+    - target: {fileID: 0}
+      propertyPath: ingredients.Array.data[2]
+      value: 
+      objectReference: {fileID: 101466, guid: 039edaeda4e6d6d4c91a2a30989606b1, type: 2}
+    - target: {fileID: 0}
+      propertyPath: ingredients.Array.data[3]
+      value: 
+      objectReference: {fileID: 142144, guid: 13ff34bf0356aa245b688cfee9a5da9b, type: 2}
+    - target: {fileID: 0}
+      propertyPath: time
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: servings
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recipeImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 64827c93446590f4a85705aef3a08775,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: recipeName
+      value: Hamburger
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kitchenware.Array.data[0]
+      value: 
+      objectReference: {fileID: 101096, guid: 35c7943bc675ccb4493f98c008529312, type: 2}
+    - target: {fileID: 0}
+      propertyPath: stepTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: finalResul
+      value: 
+      objectReference: {fileID: 155390, guid: 57a81338c9064994889d1f95de5e9426, type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 197618}
+  m_IsPrefabParent: 1
