@@ -270,7 +270,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
         {
             attack = (csMagicPower)attack;
             var meditation = attacker.PassivePower.First(s => s.Name == "Meditation");
-            if (attacker.Mana < 0 || attacker.Mana < attack.Mana)
+            if ((attacker.Mana < 0 || attacker.Mana < attack.Mana) && (attacker.Stamina < 0 || attacker.Stamina < attack.Stamina))
                 meditation.IsInUse = true;
 
             if (meditation.IsInUse == true)
@@ -361,7 +361,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
             {
                 attack.CastSpell();
                 csDefenseData defenseData = ChooseDefense(attacker, defender, attack);
-                damage = attack.AttackValue - (defenseData.Value < 1 ? 1 : defenseData.Value);
+                damage = attack.AttackValue - (defenseData.Value < 1 && defenseData.Blocked ? 1 : defenseData.Value);
                 if (defenseData.Blocked)
                 {
                     turn.Description += attacker.Name + " used " + attack.Name + " and only gave " + damage.ToString() + " damage points." + System.Environment.NewLine;
@@ -452,7 +452,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
         if (attack is csPhysicalPower)
         {
             var meditation = attacker.PassivePower.First(s => s.Name == "Meditation");
-            if (attacker.Stamina < 0 || attacker.Stamina < attack.Stamina)
+            if ((attacker.Mana < 0 || attacker.Mana < attack.Mana) && (attacker.Stamina < 0 || attacker.Stamina < attack.Stamina))
                 meditation.IsInUse = true;
 
             if (meditation.IsInUse == true)
@@ -460,6 +460,8 @@ public class csFightResumeSceneManager : MonoBehaviour {
                 var meditationValue = meditation.Use();
                 if (meditationValue < 1.0f)
                     meditationValue = 1.0f;
+
+                turn.Description += attacker.Name + " used " + meditation.Name + System.Environment.NewLine;
 
                 if (meditation.Increase())
                 {
@@ -519,11 +521,11 @@ public class csFightResumeSceneManager : MonoBehaviour {
             if (attacker.Stamina >= attack.Stamina)
             {
                 csDefenseData defenseData = ChooseDefense(attacker, defender, attack);
-                damage = attack.AttackValue - (defenseData.Value < 1 ? 1 : defenseData.Value);
+                damage = attack.AttackValue - (defenseData.Value < 1 && defenseData.Blocked ? 1 : defenseData.Value);
                 if (defenseData.Blocked)
                 {
                     turn.Description += attacker.Name + " used " + attack.Name + " and only gave " + damage.ToString() + " damage points." + System.Environment.NewLine;
-                    turn.Description += defender.Name + " blocked your " + attack.Name + " attack." + System.Environment.NewLine;
+                    turn.Description += defender.Name + " blocked the " + attack.Name + " attack." + System.Environment.NewLine;
                 }
                 else
                 {
