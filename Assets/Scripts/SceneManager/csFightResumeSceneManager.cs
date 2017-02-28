@@ -361,7 +361,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
             {
                 attack.CastSpell();
                 csDefenseData defenseData = ChooseDefense(attacker, defender, attack);
-                damage = attack.AttackValue - defenseData.Value;
+                damage = attack.AttackValue - (defenseData.Value < 1 ? 1 : defenseData.Value);
                 if (defenseData.Blocked)
                 {
                     turn.Description += attacker.Name + " used " + attack.Name + " and only gave " + damage.ToString() + " damage points." + System.Environment.NewLine;
@@ -519,7 +519,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
             if (attacker.Stamina >= attack.Stamina)
             {
                 csDefenseData defenseData = ChooseDefense(attacker, defender, attack);
-                damage = attack.AttackValue - defenseData.Value;
+                damage = attack.AttackValue - (defenseData.Value < 1 ? 1 : defenseData.Value);
                 if (defenseData.Blocked)
                 {
                     turn.Description += attacker.Name + " used " + attack.Name + " and only gave " + damage.ToString() + " damage points." + System.Environment.NewLine;
