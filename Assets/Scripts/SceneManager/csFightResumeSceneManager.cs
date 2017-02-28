@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -59,6 +59,8 @@ public class csFightResumeSceneManager : MonoBehaviour {
     public string Winner { get; set; }
     public string Loser { get; set; }
     private float cumulativeRepatedAttackPerc = 0;
+    private float minNeededMana = float.PositiveInfinity;
+    private float minNeededStamina = float.PositiveInfinity;
 
 	// Use this for initialization
 	void Start () 
@@ -177,8 +179,28 @@ public class csFightResumeSceneManager : MonoBehaviour {
         string lastAttackName = String.Empty;
 
         List<csIAttack> attacks = new List<csIAttack>();
-        attacks.AddRange(attacker.Attacks);
-        attacks.AddRange(attacker.Powers);
+
+        foreach(csIAttack attack in attacker.Attacks)
+        {
+            if (attack.Stamina <= attacker.Stamina)
+            {
+                attacks.Add(attack);
+                if (minNeededStamina > attack.Stamina)
+                    minNeededStamina = attack.Stamina;
+            }
+                
+        }
+        foreach (csIAttack attack in attacker.Powers)
+        {
+            if (attack.Mana <= attacker.Mana)
+            {
+                attacks.Add(attack);
+                if (minNeededMana > attack.Mana)
+                    minNeededMana = attack.Mana;
+            }
+                
+        }
+
         List<csAttackProbabilityData> probabilityList = new List<csAttackProbabilityData>();
 
         try
@@ -270,7 +292,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
         {
             attack = (csMagicPower)attack;
             var meditation = attacker.PassivePower.First(s => s.Name == "Meditation");
-            if ((attacker.Mana < 0 || attacker.Mana < attack.Mana) && (attacker.Stamina < 0 || attacker.Stamina < attack.Stamina))
+            if ((attacker.Mana < minNeededMana || attacker.Mana < attack.Mana) && (attacker.Stamina < minNeededStamina || attacker.Stamina < attack.Stamina))
                 meditation.IsInUse = true;
 
             if (meditation.IsInUse == true)
@@ -283,7 +305,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
 
                 if(meditation.Increase())
                 {
-                    turn.Description += attacker.Name + "'s " + meditation.Name + " increased by " + meditation.Factor + " it's now " + meditation.Value + System.Environment.NewLine;
+                    turn.Description += attacker.Name + "'s " + meditation.Name + " increased by " + meditation.Factor * 100.0f + " it's now " + meditation.Value * 100.0f + System.Environment.NewLine;
                 }
 
                 attacker.Mana += Mathf.RoundToInt(meditationValue);
@@ -402,7 +424,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
 
                 if (attack.Increase())
                 {
-                    turn.Description += attacker.Name + "'s " + attack.Name + " increased by " + attack.Factor + " it's now " + attack.Value + System.Environment.NewLine;
+                    turn.Description += attacker.Name + "'s " + attack.Name + " increased by " + attack.Factor * 100.0f + " it's now " + attack.Value * 100.0f + System.Environment.NewLine;
                 }
 
                 defender.Hitpoints -= Mathf.RoundToInt(damage);
@@ -452,7 +474,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
         if (attack is csPhysicalPower)
         {
             var meditation = attacker.PassivePower.First(s => s.Name == "Meditation");
-            if ((attacker.Mana < 0 || attacker.Mana < attack.Mana) && (attacker.Stamina < 0 || attacker.Stamina < attack.Stamina))
+            if ((attacker.Mana < minNeededMana || attacker.Mana < attack.Mana) && (attacker.Stamina < minNeededStamina || attacker.Stamina < attack.Stamina))
                 meditation.IsInUse = true;
 
             if (meditation.IsInUse == true)
@@ -465,7 +487,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
 
                 if (meditation.Increase())
                 {
-                    turn.Description += attacker.Name + "'s " + meditation.Name + " increased by " + meditation.Factor + " it's now " + meditation.Value + System.Environment.NewLine;
+                    turn.Description += attacker.Name + "'s " + meditation.Name + " increased by " + meditation.Factor * 100.0f + " it's now " + meditation.Value * 100.0f + System.Environment.NewLine;
                 }
 
                 attacker.Stamina += Mathf.RoundToInt(meditationValue);
@@ -534,7 +556,7 @@ public class csFightResumeSceneManager : MonoBehaviour {
 
                 if (attack.Increase())
                 {
-                    turn.Description += attacker.Name + "'s " + attack.Name + " increased by " + attack.Factor + " it's now " + attack.Value + System.Environment.NewLine;
+                    turn.Description += attacker.Name + "'s " + attack.Name + " increased by " + attack.Factor * 100.0f + " it's now " + attack.Value * 100.0f + System.Environment.NewLine;
                 }
 
                 defender.Hitpoints -= Mathf.RoundToInt(damage);
@@ -581,6 +603,63 @@ public class csFightResumeSceneManager : MonoBehaviour {
             
         }
 
+        if (attack == null)
+        {
+            var meditation = attacker.PassivePower.First(s => s.Name == "Meditation");
+            if ((attacker.Mana < minNeededMana) && (attacker.Stamina < minNeededStamina))
+                meditation.IsInUse = true;
+
+            if (meditation.IsInUse == true)
+            {
+                var meditationValue = meditation.Use();
+                if (meditationValue < 1.0f)
+                    meditationValue = 1.0f;
+
+                turn.Description += attacker.Name + " used " + meditation.Name + System.Environment.NewLine;
+
+                if (meditation.Increase())
+                {
+                    turn.Description += attacker.Name + "'s " + meditation.Name + " increased by " + meditation.Factor * 100.0f + " it's now " + meditation.Value * 100.0f + System.Environment.NewLine;
+                }
+            }
+
+            if (attacker is csKagotchi)
+            {
+                idx++;
+
+                var kagotchiStats = new csFighterStatsText();
+                kagotchiStats.Hitpoints = attacker.Hitpoints.ToString();
+                kagotchiStats.Stamina = attacker.Stamina.ToString();
+                kagotchiStats.Mana = attacker.Mana.ToString();
+
+                var botStats = new csFighterStatsText();
+                botStats.Hitpoints = defender.Hitpoints.ToString();
+                botStats.Stamina = defender.Stamina.ToString();
+                botStats.Mana = defender.Mana.ToString();
+
+                turn.Kagotchi = kagotchiStats;
+                turn.Bot = botStats;
+            }
+            else if (attacker is csBot)
+            {
+
+                idx++;
+
+                var kagotchiStats = new csFighterStatsText();
+                kagotchiStats.Hitpoints = defender.Hitpoints.ToString();
+                kagotchiStats.Stamina = defender.Stamina.ToString();
+                kagotchiStats.Mana = defender.Mana.ToString();
+
+                var botStats = new csFighterStatsText();
+                botStats.Hitpoints = attacker.Hitpoints.ToString();
+                botStats.Stamina = attacker.Stamina.ToString();
+                botStats.Mana = attacker.Mana.ToString();
+
+                turn.Kagotchi = kagotchiStats;
+                turn.Bot = botStats;
+            }
+        }
+
         turn.Idx = idx;
         return turn;
     }
@@ -596,24 +675,11 @@ public class csFightResumeSceneManager : MonoBehaviour {
             attackTurn.Turn = FightTurn;
 
             //Kagotchi turn
-            try
-            {
-                attackTurn = ProcessAttack(kagotchi, bot, kagotchiIdx, attackTurn);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            attackTurn = ProcessAttack(kagotchi, bot, kagotchiIdx, attackTurn);
+
             kagotchiIdx = attackTurn.Idx;
             //Bot turn
-            try
-            {
-                attackTurn = ProcessAttack(bot, kagotchi, botIdx, attackTurn);
-            }
-                catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            attackTurn = ProcessAttack(bot, kagotchi, botIdx, attackTurn);
 
             botIdx = attackTurn.Idx;
 
