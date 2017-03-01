@@ -177,8 +177,9 @@ public class csFightResumeSceneManager : MonoBehaviour {
         float totalPowersValue = 0;
         float probabilityRange = 0;
         string lastAttackName = String.Empty;
+        float extraPercentage = 0;
 
-        List<csIAttack> attacks = new List<csIAttack>();
+        List <csIAttack> attacks = new List<csIAttack>();
 
         foreach(csIAttack attack in attacker.Attacks)
         {
@@ -230,21 +231,37 @@ public class csFightResumeSceneManager : MonoBehaviour {
 
             csIAttack repeatedAttack = attacks.FirstOrDefault(n => n.Name == lastAttackName);
 
-            attacks = attacks.Where(n => n.Name != lastAttackName).ToList();
-
-            float extraPercentage = (cumulativeRepatedAttackPerc * repeatedAttack.RawPower) / totalPowersValue;
-
-            var probabilityDataRA = new csAttackProbabilityData();
-            probabilityDataRA.Probability = ((repeatedAttack.RawPower * 100) / totalPowersValue) - extraPercentage;
-            probabilityDataRA.Attack = repeatedAttack;
-            probabilityList.Add(probabilityDataRA);
-
-            foreach (var attack in attacks)
+            if (repeatedAttack != null)
             {
-                var probabilityData = new csAttackProbabilityData();
-                probabilityData.Probability = ((attack.RawPower * 100) / totalPowersValue) + (extraPercentage / attacks.Count);
-                probabilityData.Attack = attack;
-                probabilityList.Add(probabilityData);
+                attacks = attacks.Where(n => n.Name != lastAttackName).ToList();
+
+                if (attacks.Count == 0)
+                    extraPercentage = 0;
+                else
+                    extraPercentage = (cumulativeRepatedAttackPerc * repeatedAttack.RawPower) / totalPowersValue;
+
+                var probabilityDataRA = new csAttackProbabilityData();
+                probabilityDataRA.Probability = ((repeatedAttack.RawPower * 100) / totalPowersValue) - extraPercentage;
+                probabilityDataRA.Attack = repeatedAttack;
+                probabilityList.Add(probabilityDataRA);
+
+                foreach (var attack in attacks)
+                {
+                    var probabilityData = new csAttackProbabilityData();
+                    probabilityData.Probability = ((attack.RawPower * 100) / totalPowersValue) + (extraPercentage / attacks.Count);
+                    probabilityData.Attack = attack;
+                    probabilityList.Add(probabilityData);
+                }
+            }
+            else
+            {
+                foreach (var attack in attacks)
+                {
+                    var probabilityData = new csAttackProbabilityData();
+                    probabilityData.Probability = (attack.RawPower * 100) / totalPowersValue;
+                    probabilityData.Attack = attack;
+                    probabilityList.Add(probabilityData);
+                }
             }
         }
         else
@@ -273,6 +290,9 @@ public class csFightResumeSceneManager : MonoBehaviour {
         {
             if (randValue >= probability.Min && randValue < probability.Max)
             {
+                if (probability.Attack.Name == lastAttackName)
+                    cumulativeRepatedAttackPerc = 0;
+
                 attacker.CurrentCombat.Add(probability.Attack);
                 return probability.Attack;
             }
